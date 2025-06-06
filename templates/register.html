@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Course Registration</title>
+  <link rel="stylesheet" href="../static/register.css">
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>🎓 Course Registration Form</h2>
+    <form action="../templates/message.html" method="GET">
+
+      <div class="form-group">
+        <label for="student_name">Student Name 
+          <img src="../static/image/user.png" alt="user icon">
+        </label>
+        <input type="text" id="student_name" name="student_name" placeholder="Enter your name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address 
+          <img src="../static/image/envelope.png" alt="email icon">
+        </label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="course_id">Select Course 
+          <img src="../static/image/menu-select.png" alt="select course">
+        </label>
+        <select id="course_id" name="course_id" required>
+          <option value="">-- Select Course --</option>
+          <option value="BSC001">BSC001 - Computer Science</option>
+          <option value="BSC002">BSC002 - Mathematics</option>
+          <option value="BSC003">BSC003 - Physics</option>
+          <option value="BSC004">BSC004 - Chemistry</option>
+          <option value="BSC005">BSC005 - Biology</option>
+          <option value="BSC006">BSC006 - Statistics</option>
+          <option value="BSC007">BSC007 - Zoology</option>
+          <option value="BSC008">BSC008 - Botany</option>
+          <option value="BSC009">BSC009 - Environmental Science</option>
+          <option value="BSC010">BSC010 - Electronics</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Gender</label>
+        <div class="gender-options">
+          <label><input type="radio" name="gender" value="Male" required> Male 
+            <img src="../static/image/male.png" alt="male">
+          </label>
+          <label><input type="radio" name="gender" value="Female" required> Female 
+            <img src="../static/image/female.png" alt="female">
+          </label>
+          <label><input type="radio" name="gender" value="other" required> Others 
+            <img src="../static/image/transgender.png" alt="other">
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone_number">Phone Number 
+          <img src="../static/image/phone.png" alt="phone">
+        </label>
+        <input type="text" id="phone_number" name="phone_number" placeholder="Enter phone number" pattern="\d{10}" maxlength="10" required title="Please enter exactly 10 digits">
+      </div>
+
+      <div class="form-group">
+        <label for="Aadhar_no">Aadhar Number 
+          <img src="../static/image/Aadhar-Black.png" alt="aadhar" id="aadhar">
+        </label>
+        <input type="text" id="Aadhar_no" name="Aadhar_no" placeholder="Enter Aadhar Number" pattern="\d{12}" maxlength="12" required title="Please enter exactly 12 digits">
+      </div>
+
+      <div class="form-group">
+        <label>12th Grade Marks (Out of 100)</label>
+        <div class="marks-group">
+          <input type="number" name="Tamil" placeholder="Tamil" min="35" max="100" required> <br>
+          <input type="number" name="English" placeholder="English" min="35" max="100" required> <br>
+          <input type="number" name="Computer Science/Biology" placeholder="Comp Sci/Biology" min="35" max="100" required> <br>
+          <input type="number" name="Mathematics" placeholder="Mathematics" min="35" max="100" required> <br>
+          <input type="number" name="Chemistry" placeholder="Chemistry" min="35" max="100" required> <br>
+          <input type="number" name="Physics" placeholder="Physics" min="35" max="100" required> <br>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="cutoff">Cutoff Total (Out of 400)</label>
+        <input type="number" id="cutoff" name="cutoff" readonly>
+      </div>
+
+      <div class="form-buttons">
+        <!-- Swapped positions: Back first, then Submit -->
+        <a href="../templates/course.html" class="back-button">Back</a>
+        <button type="submit" class="submit-button">Submit</button>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+  const cutoffInput = document.getElementById('cutoff');
+
+  // Select specific subject inputs
+  const subjects = {
+    math: document.querySelector('input[name="Mathematics"]'),
+    physics: document.querySelector('input[name="Physics"]'),
+    chemistry: document.querySelector('input[name="Chemistry"]'),
+    bioOrCs: document.querySelector('input[name="Computer Science/Biology"]'),
+  };
+
+  function calculateCutoff() {
+    const math = parseInt(subjects.math.value) || 0;
+    const physics = parseInt(subjects.physics.value) || 0;
+    const chemistry = parseInt(subjects.chemistry.value) || 0;
+    const bioOrCs = parseInt(subjects.bioOrCs.value) || 0;
+
+    const total = math + physics + chemistry + bioOrCs;
+    cutoffInput.value = total > 400 ? 400 : total;
+  }
+
+  // Add event listeners to all relevant fields
+  Object.values(subjects).forEach(input => {
+    input.addEventListener('input', calculateCutoff);
+  });
+  </script>
+
+</body>
+</html>
