@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
 
 
@@ -67,8 +68,6 @@ def course10():
     return render_template('course10.html')
 
 
-
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -95,33 +94,46 @@ def register():
 def message():
     return render_template('message.html')
 
+#############################################
+
+
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
         email = request.form['email']
-        password = request.form['password']
-        cursor.execute("SELECT * FROM admins WHERE email = %s AND password = %s", (email, password))
-        admin_data = cursor.fetchone()
-        if admin_data:
+        password_input = request.form['password']
+
+        cursor.execute("SELECT password FROM admins WHERE email = %s", (email,))
+        result = cursor.fetchone()
+
+        if result and check_password_hash(result['password'], password_input):
             session['admin'] = email
             return redirect('/admin/view')
         else:
-            flash('Invalid credentials.')
-    return render_template('admin.html')
+            flash('Invalid email or password.', 'danger')
+            return redirect('/admin')
 
+    return render_template('admin   .html')
+
+# Route: View Registered Students
 @app.route('/admin/view')
-def admin_view():
+def view_students():
     if 'admin' not in session:
         return redirect('/admin')
-    cursor.execute("SELECT student_name, email, course_id, gender, phone_number, cutoff FROM registrations")
-    records = cursor.fetchall()
-    return render_template("admin_registrations.html", records=records)
+
+    cursor.execute("SELECT * FROM registrations")
+    students = cursor.fetchall()
+
+    return render_template('student_list.html', students=students)
 
 @app.route('/admin/logout')
-def logout():
+def admin_logout():
     session.pop('admin', None)
     return redirect('/admin')
+
+
+#############################################################################
 
 if __name__ == '__main__':
     app.run(debug=True)
