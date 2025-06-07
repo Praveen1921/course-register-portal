@@ -20,12 +20,15 @@
 
   <!-- NAVIGATION -->
   <nav>
-    <ul>
-      <li><a href="../templates/home.html">Home</a></li>
-      <li><a href="../templates/course.html">Courses</a></li> 
-      <li><a href="../templates/admin.html">Admin View</a></li>
-      <li><a href="../templates/about.html">About University</a></li>
-    </ul>
+  <nav>
+  <ul>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    <li><a href="{{ url_for('course') }}">Courses</a></li>
+    <li><a href="{{ url_for('admin') }}">Admin View</a></li>
+    <li><a href="{{ url_for('about') }}">About University</a></li>
+  </ul>
+</nav>
+
   </nav>
 
   <!-- MEDIA SECTION -->
