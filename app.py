@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, flash
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 import mysql.connector
 
 
@@ -94,46 +94,51 @@ def register():
 def message():
     return render_template('message.html')
 
-#############################################
-
-
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
-        email = request.form['email']
-        password_input = request.form['password']
+        email = request.form.get('email')
+        password_input = request.form.get('password')
 
-        cursor.execute("SELECT password FROM admins WHERE email = %s", (email,))
-        result = cursor.fetchone()
-
-        if result and check_password_hash(result['password'], password_input):
+        # ✅ Manual check — skip database
+        if email == 'admin@alagappa.edu' and password_input == 'admin123':
             session['admin'] = email
-            return redirect('/admin/view')
+            flash('Login successful.', 'success')
+            return redirect('/admin_view')
         else:
             flash('Invalid email or password.', 'danger')
             return redirect('/admin')
 
-    return render_template('admin   .html')
-
+    return render_template('admin.html')
 # Route: View Registered Students
-@app.route('/admin/view')
-def view_students():
+@app.route('/admin_view', methods=['GET', 'POST'])
+def admin_view():
     if 'admin' not in session:
         return redirect('/admin')
 
-    cursor.execute("SELECT * FROM registrations")
-    students = cursor.fetchall()
+    selected_course = None
+    try:
+        if request.method == 'POST':
+            selected_course = request.form.get('course_id')
+            cursor.execute("SELECT * FROM registrations WHERE course_id = %s", (selected_course,))
+        else:
+            cursor.execute("SELECT * FROM registrations")
 
-    return render_template('student_list.html', students=students)
+        records = cursor.fetchall()
+        print("Records fetched:", records)  # ✅ DEBUG LINE
+
+        return render_template('admin_view.html', records=records, selected_course=selected_course)
+
+    except Exception as e:
+        return f"Error: {e}"
+
 
 @app.route('/admin/logout')
 def admin_logout():
     session.pop('admin', None)
     return redirect('/admin')
 
-
-#############################################################################
 
 if __name__ == '__main__':
     app.run(debug=True)

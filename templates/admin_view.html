@@ -10,33 +10,51 @@
 
   <h2>📋 Registered Course Details</h2>
 
+  {% if records %}
   <table>
     <thead>
       <tr>
         <th>Student Name</th>
         <th>Email</th>
-        <th>Phone</th>
-        <th>Gender</th>
         <th>Course ID</th>
+        <th>Gender</th>
+        <th>Phone</th>
+        <th>Aadhar</th>
+        <th>Tamil</th>
+        <th>English</th>
+        <th>CS/Bio</th>
+        <th>Maths</th>
+        <th>Chemistry</th>
+        <th>Physics</th>
         <th>Cutoff</th>
       </tr>
     </thead>
     <tbody>
       {% for row in records %}
       <tr>
-        <td>{{ row[0] }}</td>
         <td>{{ row[1] }}</td>
         <td>{{ row[2] }}</td>
         <td>{{ row[3] }}</td>
         <td>{{ row[4] }}</td>
         <td>{{ row[5] }}</td>
+        <td>{{ row[6] }}</td>
+        <td>{{ row[7] }}</td>
+        <td>{{ row[8] }}</td>
+        <td>{{ row[9] }}</td>
+        <td>{{ row[10] }}</td>
+        <td>{{ row[11] }}</td>
+        <td>{{ row[12] }}</td>
+        <td>{{ row[13] }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+  {% else %}
+    <p>No registered students found.</p>
+  {% endif %}
 
   <div class="logout-btn">
-   <a href="/admin">Logout</a>
+    <a href="{{ url_for('admin') }}">Logout</a>
   </div>
 
 </body>

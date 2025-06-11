@@ -10,7 +10,7 @@
 
   <div class="container">
     <!-- Login Form -->
-    <form id="loginForm" action="admin">
+    <form id="loginForm" action="/admin" method="POST">
       <h2> 
         <img src="../static/image/user.png" alt="user login" id="user"> 
         Admin Login
@@ -27,7 +27,8 @@
           Password 
           <img src="../static/image/lock.png" alt="password" id="lock">
         </label>
-        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+        <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+
       </div>
       <button type="submit" class="btn">Login</button>
     </form>
@@ -36,8 +37,8 @@
       <button class="btn">Back to Home</button>
     </a>
   </div>
-
-  <!-- <script>
+<!-- 
+  <script>
     const loginForm = document.getElementById('loginForm');
 
     function showLogin() {
