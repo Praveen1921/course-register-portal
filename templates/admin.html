@@ -3,49 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Login/Register</title>
+  <title>Admin Login</title>
   <link rel="stylesheet" href="../static/admin.css">
 </head>
 <body>
 
-  <div class="container">
-    <!-- Login Form -->
-    <form id="loginForm" action="/admin" method="POST">
-      <h2> 
-        <img src="../static/image/user.png" alt="user login" id="user"> 
-        Admin Login
-      </h2>
-      <div class="form-group">
-        <label for="email">
-          Email  
-          <img src="../static/image/envelope.png" alt="Email icon" id="email">
-        </label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required>
-      </div>
-      <div class="form-group">
-        <label for="loginPassword">
-          Password 
-          <img src="../static/image/lock.png" alt="password" id="lock">
-        </label>
-        <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+  <header>
+    <h1>🎓 Alagappa University - Admin Portal</h1>
+  </header>
 
-      </div>
-      <button type="submit" class="btn">Login</button>
-    </form>
-    
-    <a href="/">
-      <button class="btn">Back to Home</button>
-    </a>
-  </div>
-<!-- 
-  <script>
-    const loginForm = document.getElementById('loginForm');
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('course') }}">Courses</a></li>
+      <li><a href="{{ url_for('admin') }}">Admin View</a></li>
+      <li><a href="{{ url_for('about') }}">About</a></li>
+    </ul>
+  </nav>
 
-    function showLogin() {
-      registerForm.classList.add('hidden');
-      loginForm.classList.remove('hidden');
-    }
-  </script> -->
+  <main>
+    <div class="container">
+      <form id="loginForm" action="/admin" method="POST">
+        <h2>
+          <img src="../static/image/user.png" alt="user login" style="width:30px; vertical-align:middle;">
+          Admin Login
+        </h2>
+        <div class="form-group">
+          <label for="email">
+            Email
+            <img src="../static/image/envelope.png" alt="Email icon" style="width:16px; vertical-align:middle;">
+          </label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">
+            Password
+            <img src="../static/image/lock.png" alt="password" style="width:16px; vertical-align:middle;">
+          </label>
+          <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn">Login</button>
+      </form>
+      <a href="/">
+        <button class="btn" style="margin-top:10px;">Back to Home</button>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Alagappa University. All rights reserved.
+  </footer>
 
 </body>
 </html>

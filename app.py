@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash
 from werkzeug.security import check_password_hash
 import mysql.connector
+import pymysql
 
 
 app = Flask(__name__)
@@ -10,7 +11,7 @@ app.secret_key = 'your_secret_key_here'
 db = mysql.connector.connect(
     host="localhost",
     user="root",         # Change if needed
-    password="Digidara1000",         # Change if your MySQL has a password
+    password="karthi@2006",         # Change if your MySQL has a password
     database="alagappa_db"
 )
 cursor = db.cursor()
@@ -102,7 +103,7 @@ def admin():
         password_input = request.form.get('password')
 
         # ✅ Manual check — skip database
-        if email == 'admin@alagappa.edu' and password_input == 'admin123':
+        if email == 'admin@123' and password_input == '1234':
             session['admin'] = email
             flash('Login successful.', 'success')
             return redirect('/admin_view')
@@ -111,24 +112,49 @@ def admin():
             return redirect('/admin')
 
     return render_template('admin.html')
+
 # Route: View Registered Students
-@app.route('/admin_view', methods=['GET', 'POST'])
+@app.route('/admin_view', methods=['GET'])
 def admin_view():
     if 'admin' not in session:
         return redirect('/admin')
 
-    selected_course = None
     try:
-        if request.method == 'POST':
-            selected_course = request.form.get('course_id')
-            cursor.execute("SELECT * FROM registrations WHERE course_id = %s", (selected_course,))
-        else:
-            cursor.execute("SELECT * FROM registrations")
+        # Get query parameters
+        course_name = request.args.get('course_name', '').strip()
+        gender = request.args.get('gender', '').strip()
+        cutoff = request.args.get('cutoff', '').strip()
 
+        # Build SQL dynamically
+        query = "SELECT * FROM registrations WHERE 1=1"
+        params = []
+
+        if course_name:
+            query += " AND course_id LIKE %s"
+            params.append(f"%{course_name}%")
+
+        if gender:
+            query += " AND gender = %s"
+            params.append(gender)
+
+        if cutoff:
+            try:
+                cutoff_value = int(cutoff)
+                query += " AND cutoff >= %s"
+                params.append(cutoff_value)
+            except ValueError:
+                pass  # Ignore invalid cutoff value
+
+        cursor.execute(query, tuple(params))
         records = cursor.fetchall()
-        print("Records fetched:", records)  # ✅ DEBUG LINE
 
-        return render_template('admin_view.html', records=records, selected_course=selected_course)
+        return render_template(
+            'admin_view.html',
+            records=records,
+            selected_course=course_name,
+            selected_gender=gender,
+            selected_cutoff=cutoff
+        )
 
     except Exception as e:
         return f"Error: {e}"

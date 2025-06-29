@@ -3,59 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Registered Students</title>
+  <title>Admin - Registered Students</title>
   <link rel="stylesheet" href="../static/admin_view.css">
 </head>
 <body>
 
-  <h2>📋 Registered Course Details</h2>
+  <header>
+    <h1>🎓 Alagappa University - Admin Panel</h1>
+  </header>
 
-  {% if records %}
-  <table>
-    <thead>
-      <tr>
-        <th>Student Name</th>
-        <th>Email</th>
-        <th>Course ID</th>
-        <th>Gender</th>
-        <th>Phone</th>
-        <th>Aadhar</th>
-        <th>Tamil</th>
-        <th>English</th>
-        <th>CS/Bio</th>
-        <th>Maths</th>
-        <th>Chemistry</th>
-        <th>Physics</th>
-        <th>Cutoff</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for row in records %}
-      <tr>
-        <td>{{ row[1] }}</td>
-        <td>{{ row[2] }}</td>
-        <td>{{ row[3] }}</td>
-        <td>{{ row[4] }}</td>
-        <td>{{ row[5] }}</td>
-        <td>{{ row[6] }}</td>
-        <td>{{ row[7] }}</td>
-        <td>{{ row[8] }}</td>
-        <td>{{ row[9] }}</td>
-        <td>{{ row[10] }}</td>
-        <td>{{ row[11] }}</td>
-        <td>{{ row[12] }}</td>
-        <td>{{ row[13] }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  {% else %}
-    <p>No registered students found.</p>
-  {% endif %}
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('course') }}">Courses</a></li>
+      <li><a href="{{ url_for('admin') }}">Admin View</a></li>
+      <li><a href="{{ url_for('about') }}">About University</a></li>
+    </ul>
+  </nav>
 
-  <div class="logout-btn">
-    <a href="{{ url_for('admin') }}">Logout</a>
-  </div>
+  <main>
+    <section class="filter-section">
+      <h2>📋 Registered Course Details</h2>
+      <form class="filter-form" method="get" action="{{ url_for('admin_view') }}">
+  <input type="text" name="course_name" placeholder="Search by Course Name" value="{{ selected_course }}">
+  
+  <select name="gender">
+    <option value="">All Genders</option>
+    <option value="Male" {% if selected_gender == 'Male' %}selected{% endif %}>Male</option>
+    <option value="Female" {% if selected_gender == 'Female' %}selected{% endif %}>Female</option>
+  </select>
+  
+ <select name="cutoff">
+  <option value="">All Cutoffs</option>
+  <option value="400" {% if selected_cutoff == '400' %}selected{% endif %}>Above 400</option>
+  <option value="350" {% if selected_cutoff == '350' %}selected{% endif %}>Above 350</option>
+  <option value="300" {% if selected_cutoff == '300' %}selected{% endif %}>Above 300</option>
+  <option value="250" {% if selected_cutoff == '250' %}selected{% endif %}>Above 250</option>
+</select>
+
+  <button type="submit">Filter</button>
+</form>
+
+    </section>
+
+    {% if records %}
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>Email</th>
+            <th>Course ID</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Aadhar</th>
+            <th>Tamil</th>
+            <th>English</th>
+            <th>CS/Bio</th>
+            <th>Maths</th>
+            <th>Chemistry</th>
+            <th>Physics</th>
+            <th>Cutoff</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in records %}
+          <tr>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+            <td>{{ row[7] }}</td>
+            <td>{{ row[8] }}</td>
+            <td>{{ row[9] }}</td>
+            <td>{{ row[10] }}</td>
+            <td>{{ row[11] }}</td>
+            <td>{{ row[12] }}</td>
+            <td>{{ row[13] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <p style="text-align:center;">No registered students found.</p>
+    {% endif %}
+
+    <div class="logout-btn">
+      <a href="{{ url_for('admin') }}">Logout</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Alagappa University. All rights reserved.</p>
+  </footer>
 
 </body>
 </html>
